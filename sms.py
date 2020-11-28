@@ -21,7 +21,8 @@ session = Session()
 
 # Choose the role
 is_admin_role = button_dialog(
-    title='Please choose your role',
+    title='Welcome to Student Management System',
+    text='Please choose your role. Continue as?',
     buttons=[
         ('Admin', True),
         ('Student', False),
