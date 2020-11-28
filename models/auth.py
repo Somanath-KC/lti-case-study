@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Date, DateTime
-
+from .base import Base
 
 class Auth(Base):
     __tablename__ = "auth"

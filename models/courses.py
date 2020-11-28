@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Date, DateTime, Integer
-
+from .base import Base
 
 class Courses(Base):
     __tablename__ = "courses"
