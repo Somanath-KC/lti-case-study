@@ -1,6 +1,6 @@
 from prompt_toolkit.shortcuts import message_dialog, prompt, button_dialog
 import os
-from .stu_auth import auth
+from .auth_view import stu_auth
 
 def center_text(text):
     """
@@ -32,17 +32,17 @@ def main(session):
 def register(session):
 
     addTask = print(" Enter details to register \n ")
-    rollNum = prompt("Roll Number >> ")
+    rollNum = prompt("Roll Number > ")
     while(True):        
         if len(rollNum)==10:
             rollNumber = rollNum
             break
         else:
-            rollNum = prompt(" Enter valid 10 digit roll number >> ")
+            rollNum = prompt(" Enter valid 10 digit roll number > ")
 
-    name = prompt("Name        >> ")
-    dob = prompt("DateOfBirth >> ")
-    date = " Today date "
+    name = prompt("Name        > ")
+    dob = prompt("DateOfBirth > ")
+    date = prompt("DateOfJoining > ")
 
     # dic[addTask] = 0      
     # Query for insertion into db required here 
@@ -51,27 +51,36 @@ def register(session):
     if(evaluate()):
         main(session)
 
+def stu_prompt():
+    """
+        Starts Receving input from user.
+    """
+    while True:
+        text = prompt("user@student> ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+        print(text)
+
 
 def studentLogin(session):
    
-    if auth(session, is_stu=True):
-        text = prompt("user@student>> press enter to continue ", 
-                bottom_toolbar="\n"+ center_text(
-                    "Student Management System (Logged In as @Student)") + "\n")
-        print(text)
+    if stu_auth(session, is_stu=True):
+        print(" Press any key to continue .. \n")
         student()
+        
+        
     else:
-        print(" Invalid credentials ")
+        print(" Invalid credentials \n")
 
 def evaluate():
-    value = int(prompt("\nDo you want to visit main menu \n1.Yes \n2.No \n"))
+    value = int(prompt("\n Do you want to visit main menu \n 1.Yes \n 2.No \n \n > "))
     if (value ==1):
         return True
     else:
 
         # write code to clear session if present 
 
-        print(" Session terminated succesfully ")
+        print(" Session terminated succesfully \n")
         exit()
         
 def student():
@@ -83,15 +92,14 @@ def student():
     
     a=True
     while(a):
-        opt= int(prompt("choose to perform \n 1.View Courses \n 2.Enroll for a Course \n 3.Sign out  \n>>"))
-
+        opt= int(prompt("choose to perform \n 1.View Courses \n 2.Enroll for a Course \n 3.Sign out  \n> "))
         
         if (opt) == 1:
             print("\n View Courses ")
             i=1
             for key,value in dic.items():
                 if dic[key] ==0:
-                    print(str(i)+":"+ key)
+                    print(" "+str(i)+":"+ key)
                     i+=1
             if(evaluate()):
                 student()
@@ -103,13 +111,17 @@ def student():
             for (key),value in dic.items():
                 i+=1
                 newlist.append(key)
-                print("  "+str(i)+" : "+str(key))
+                print("  "+str(i)+":"+str(key))
 
-            opt = int(prompt("select to Course to Apply \n >>"))-1
-            origkey = newlist[opt]
-            dic[origkey] = 1
+            opt = int(prompt("\n select to Course to Apply \n \n> "))-1
+            if opt < len(newlist):
+                print(len(newlist))
+                origkey = newlist[opt]
+                dic[origkey] = 1
+            else:
+                opt = int(prompt(" \n select a valid course \n \n"))
 
-            print(" Applied Succesfully \n ")
+            print(" \n Applied Succesfully \n ")
             if(evaluate()):
                 student()
             
@@ -118,4 +130,4 @@ def student():
             break
         else:
             print(" \n invalid opiton") 
-            
+    
