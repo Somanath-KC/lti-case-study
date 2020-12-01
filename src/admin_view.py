@@ -13,7 +13,44 @@ def center_text(text):
     space_on_one_side = (total_terminal_columns - text_length)//2
     space = " " * space_on_one_side
 
-    return space + text + space    
+    return space + text + space
+
+
+# Admin Prompt actions functionality
+def prompt_add_new_course():
+    """
+        Allow admin to add new courses to db.
+    """
+    course_name = prompt(" Name of the Course?: ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Administrator)") + "\n")
+    
+    course_duration = prompt(" Duration of the Course? (In Hours): ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Administrator)") + "\n")
+    
+    course_fee = prompt(" Fee for the Course? (INR): ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Administrator)") + "\n")
+    
+    if course_name and course_duration and course_fee:
+        print("Add Course Successful!")
+        admin_prompt()
+    else:
+        prompt_add_new_course()
+
+def prompt_view_courses():
+    """
+        Shows the available courses in db.
+    """
+    pass
+
+
+def prompt_view_student():
+    """
+        View the details of given student rollnumber
+    """
+    pass
 
 
 def admin_prompt():
@@ -21,10 +58,23 @@ def admin_prompt():
         Starts Receving input from user.
     """
     while True:
+        print("\nWelcome Admin.")
+        print("\n Choose one option to continue.")
+        print("""
+            1. Add a new Course
+            2. View Courses
+            3. View Student
+        """)
         text = prompt("user@admin> ", 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
-        print(text)
+        
+        if text == "1":
+            prompt_add_new_course()
+        elif text == "2":
+            prompt_view_courses()
+        elif text == "3":
+            prompt_view_student()
 
 
 def main(session):
