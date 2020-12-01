@@ -11,7 +11,11 @@ from src import admin_view, student_view
 
 
 # Clear Screen
-os.system("clear")
+name = os.name
+if name == 'nt':
+    os.system("cls")
+else:
+    os.system("clear")
 
 # Database Configuration
 engine = create_engine("sqlite:///smsapp.db")

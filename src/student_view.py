@@ -1,8 +1,10 @@
-from prompt_toolkit.shortcuts import message_dialog, prompt, button_dialog
 import os
+from prompt_toolkit.shortcuts import message_dialog, prompt, button_dialog
 from .auth_view import stu_auth
-import datetime
 from src.models.students import Student
+from src.models.auth import Auth
+from datetime import datetime
+
 
 def center_text(text):
     """
@@ -16,31 +18,30 @@ def center_text(text):
     return space + text + space    
 
 # Validates Add new Course Data
-def validate_new_course(stu_rollNum, stu_dob, date):
+def validate_new_course(roll_number, stu_dob, password, retype_password):
     """
         Input: student feilds
         Output: Tuple(Status, Message)
     """
 
     message = ""
-
+ 
     # Roll Number validation
-    if not (len(stu_rollNum) == 10 ):
+    if not (len(roll_number) == 10 ):
         message = "Roll Number must contain 10 Characters."
-        return False, message
-        
-
-    # Date Validation
-    date_format = '%d-%m-%Y'
-    if not( datetime.datetime.strptime(date, date_format )):
-        message = "Incorrect data format, should be DD-MM-YYYY"
         return False, message
     
     # DOB Validation
-    
-    if not( datetime.datetime.strptime(date, date_format )):
-        message = "Incorrect data format, should be DD-MM-YYYY"
+    date_format = '%d-%m-%Y'
+    if not( datetime.strptime(stu_dob, date_format )):
+        message = "Incorrect date format, should be DD-MM-YYYY"
         return False, message
+
+    #password validations
+    if (password != retype_password):
+        message = " Password Mismatch "
+        return False, message
+
     return True, message
 
 
@@ -49,7 +50,7 @@ def main(session):
     # Choose the role
     is_stu_role = button_dialog(
         title='Student Login',
-        text='Choose Login to Continue or get register ',
+        text='Choose Login to Continue or Get registered ',
         buttons=[
             ('Login', True),
             ('Register', False),
@@ -60,58 +61,61 @@ def main(session):
     else:
         register(session)
 
+
 def register(session):
+    """
+        Invokes the student registration form.
+    """
 
     addTask = print(" Enter details to register \n ")
-    stu_rollNum = prompt("Roll Number : ")
-    # while(True):        
-    #     if len(stu_rollNum)==10:
-    #         rollNumber = stu_rollNum
-    #         break
-    #     else:
-    #         rollNum = prompt(" Enter valid 10 digit roll number : ")
+    
+    roll_number = prompt(" Enter your Roll Number: ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+    
 
-    # name = prompt("Name        > ")
-    # dob = prompt("DateOfBirth > ")
-    # date = prompt("DateOfJoining > ")
-
-    # dic[addTask] = 0      
-    # Query for insertion into db required here 
-    """
-        Allow admin to add new courses to db.
-    """
     stu_name = prompt(" Name of the Student: ", 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Student)") + "\n")
     
-    stu_dob = prompt(" Date of Birth: ", 
-               bottom_toolbar="\n"+ center_text(
-                   "Student Management System (Logged In as @Student)") + "\n")
-    
-    date = prompt(" Joining Date: ", 
+    stu_dob = prompt(" Date of Birth (DD-MM-YYYY): ", 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Student)") + "\n")
 
-    # Validates input
-    status, message = validate_new_course(stu_rollNum, stu_dob, date)
+    password = prompt(" Password: ",
+               is_password=True, 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+
+    retype_password = prompt(" Re-type Password: ",
+               is_password=True, 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+
+    date_of_registration = datetime.now()
+
+    # Input Validation
+    status, message = validate_new_course(roll_number, stu_dob, password, retype_password)
     if status:
         Student(
                name = stu_name,
                dob = stu_dob,
-               registration_date = date,
-               roll_number = stu_rollNum).insert(session)
-        print("\nRegisterd  Successful!")
-        if(evaluate()):
+               registration_date = date_of_registration,
+               roll_number = roll_number).insert(session)
 
-            main(session)
+        Auth(username = roll_number,
+             password = password,
+             last_login = datetime.now()).insert(session)
+        
+        message_dialog(
+            title='Registration Successful.',
+            text='Press ENTER to Login.').run()
+       
+        main(session)
     else:
         print("\n ",message," Please try again!")
         register(session)
 
-
-    #print(dic)
-    if(evaluate()):
-        main(session)
 
 def stu_prompt():
     """

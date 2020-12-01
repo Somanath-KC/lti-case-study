@@ -38,6 +38,6 @@ class Student(Base):
             Output: Query Result
         """
 
-        result = session.query(Course).all()
+        result = session.query(Student).all()
 
         return result
