@@ -18,7 +18,7 @@ def center_text(text):
 # Validates Add new Course Data
 def validate_new_course(stu_rollNum, stu_dob, date):
     """
-        Input: Course feilds
+        Input: student feilds
         Output: Tuple(Status, Message)
     """
 
@@ -28,6 +28,7 @@ def validate_new_course(stu_rollNum, stu_dob, date):
     if not (len(stu_rollNum) == 10 ):
         message = "Roll Number must contain 10 Characters."
         return False, message
+        
 
     # Date Validation
     date_format = '%d-%m-%Y'
@@ -36,11 +37,11 @@ def validate_new_course(stu_rollNum, stu_dob, date):
         return False, message
     
     # DOB Validation
-    date_format = '%d-%m-%Y'
+    
     if not( datetime.datetime.strptime(date, date_format )):
         message = "Incorrect data format, should be DD-MM-YYYY"
         return False, message
-
+    return True, message
 
 
 def main(session):
@@ -92,13 +93,13 @@ def register(session):
                    "Student Management System (Logged In as @Student)") + "\n")
 
     # Validates input
-    status, message = validate_new_course(stu_rollNum, stu_name, stu_dob, date)
+    status, message = validate_new_course(stu_rollNum, stu_dob, date)
     if status:
         Student(
                name = stu_name,
                dob = stu_dob,
-               date = date,
-               rollNum = stu_rollNum).insert(session)
+               registration_date = date,
+               roll_number = stu_rollNum).insert(session)
         print("\nRegisterd  Successful!")
         if(evaluate()):
 
