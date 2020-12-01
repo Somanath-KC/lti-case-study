@@ -4,6 +4,10 @@ from prompt_toolkit import prompt
 import os
 
 
+# ----- #
+# Start Helper Functions
+# ----- #
+
 def center_text(text):
     """
         Calculates center based on text length
@@ -15,6 +19,42 @@ def center_text(text):
 
     return space + text + space
 
+
+
+# ----- #
+# Start Validators
+# ----- #
+
+# Validates Add new Course Data
+def validate_new_course(name, duration, fee):
+    """
+        Input: Course feilds
+        Output: Tuple(Status, Message)
+    """
+
+    message = ""
+
+    # Course Name validation
+    if not (len(name) > 3):
+        message = "Course name must contain atleast 3 Characters."
+        return False, message
+
+    # Course Duration Validation
+    if not(duration.isnumeric()):
+        message = "Duration feild has to be integer."
+        return False, message
+
+    # Course Fee Validation
+    if not(fee.isnumeric()):
+        message = "Fee feild has to be integer."
+        return False, message
+
+    return True, message
+
+
+# ----- #
+# Start Admin Prompt Functionalities
+# ----- #
 
 # Admin Prompt actions functionality
 def prompt_add_new_course():
@@ -32,12 +72,16 @@ def prompt_add_new_course():
     course_fee = prompt(" Fee for the Course? (INR): ", 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
-    
-    if course_name and course_duration and course_fee:
-        print("Add Course Successful!")
+
+    # Validates input
+    status, message = validate_new_course(course_name, course_duration, course_fee)
+    if status:
+        print("\nAdd Course Successful!")
         admin_prompt()
     else:
+        print("\n ",message," Please try again!")
         prompt_add_new_course()
+
 
 def prompt_view_courses():
     """
@@ -64,6 +108,7 @@ def admin_prompt():
             1. Add a new Course
             2. View Courses
             3. View Student
+            4. Exit
         """)
         text = prompt("user@admin> ", 
                bottom_toolbar="\n"+ center_text(
@@ -75,7 +120,9 @@ def admin_prompt():
             prompt_view_courses()
         elif text == "3":
             prompt_view_student()
-                   "admin Management System (Logged In as @Administrator)") + "\n")
+        elif text == "4":
+            exit()
+
 
 def evaluate():
     value = int(prompt("\n Do you want to visit main menu \n 1.Yes \n 2.No \n \n > "))
@@ -87,48 +134,6 @@ def evaluate():
 
         print(" Session terminated succesfully \n")
         exit()
-        
-
-def admin():
-    dic = dict({"CSE":0,"ECE":0,"EEE":0,"MBA":0,"MECH":0})
-    newlist = list()
-
-    opt = int(prompt("Select one to perform \n 1.Add new course \n 2.View Courses \n 3.View admin\n > "))
-    if opt ==1:
-        course = prompt(" Enter course to add Ex:CSE,ECE.. \n > ")
-        if  len(course) ==3:
-
-            # query to insert course required here 
-            print(" Added Sucessfully \n ")
-            
-        else:
-            course = prompt(" Please Enter valid course of lenght 3 characters \n > ")
-
-        if(evaluate()):
-            admin()
-
-    elif opt ==2:
-        print(" List of Courses ") 
-
-        # query to fetch courses from db 
-        i=1
-        for key,value in dic.items():
-            if dic[key] ==0:
-                print(" "+str(i)+":"+ key)
-                i+=1
-        if(evaluate()):
-            admin()    
-    elif opt==3:
-        print(" List of Registered Studendts ")
-
-        # query to get list of  admins from db and display here 
-        if(evaluate()):
-            admin()
-    else:
-        print("invalid option ")
-        if(evaluate()):
-            admin() 
-
 
 def main(session):
     """
@@ -146,4 +151,4 @@ def main(session):
 
 
     # Start Admin Prompt
-    admin()
+    admin_prompt()
