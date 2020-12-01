@@ -11,13 +11,19 @@ class Course(Base):
     fee = Column('fee', Integer, nullable=False)
     date_of_creation = Column('date_of_creation', DateTime, nullable=False)
 
+    
+    def __repr__(self) -> str:
+        return "COURSE_ID-{}, NAME-{}, DURAION-{}Hrs., FEE-{}, COURSE_CREATION_DATE-{}".format(self.course_id, self.name,
+                     self.duration_in_hours, 
+                     self.fee, self.date_of_creation)
+
 
     def insert(self, session):
         """
             Input: Session
             Output: Status of transaction.
         """
-        
+
         session.add(self)
         try:
             session.commit()
@@ -27,3 +33,13 @@ class Course(Base):
         
         return True
 
+    @staticmethod
+    def view_courses(session):
+        """
+            Input: Session
+            Output: Query Result
+        """
+
+        result = session.query(Course).all()
+
+        return result

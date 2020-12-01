@@ -1,7 +1,12 @@
+import os
+import random
+import string
+from datetime import datetime
+from src.models.courses import Course
 from .auth_view import auth
 from prompt_toolkit.shortcuts import message_dialog
 from prompt_toolkit import prompt
-import os
+
 
 
 # ----- #
@@ -19,6 +24,11 @@ def center_text(text):
 
     return space + text + space
 
+
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
 
 
 # ----- #
@@ -57,7 +67,7 @@ def validate_new_course(name, duration, fee):
 # ----- #
 
 # Admin Prompt actions functionality
-def prompt_add_new_course():
+def prompt_add_new_course(session):
     """
         Allow admin to add new courses to db.
     """
@@ -76,28 +86,38 @@ def prompt_add_new_course():
     # Validates input
     status, message = validate_new_course(course_name, course_duration, course_fee)
     if status:
+        Course(course_id = get_random_string(10),
+               name = course_name,
+               duration_in_hours = course_duration,
+               fee = course_fee,
+               date_of_creation = datetime.now()).insert(session)
         print("\nAdd Course Successful!")
-        admin_prompt()
+        admin_prompt(session)
     else:
         print("\n ",message," Please try again!")
-        prompt_add_new_course()
+        prompt_add_new_course(session)
 
 
-def prompt_view_courses():
+def prompt_view_courses(session):
     """
         Shows the available courses in db.
     """
-    pass
+    query_res = Course.view_courses(session)
+
+    for i in query_res:
+        print(i)
+
+    admin_prompt(session)
 
 
-def prompt_view_student():
+def prompt_view_student(session):
     """
         View the details of given student rollnumber
     """
     pass
 
 
-def admin_prompt():
+def admin_prompt(session):
     """
         Starts Receving input from user.
     """
@@ -115,11 +135,11 @@ def admin_prompt():
                    "Student Management System (Logged In as @Administrator)") + "\n")
         
         if text == "1":
-            prompt_add_new_course()
+            prompt_add_new_course(session)
         elif text == "2":
-            prompt_view_courses()
+            prompt_view_courses(session)
         elif text == "3":
-            prompt_view_student()
+            prompt_view_student(session)
         elif text == "4":
             exit()
         else:
@@ -142,4 +162,4 @@ def main(session):
 
 
     # Start Admin Prompt
-    admin_prompt()
+    admin_prompt(session)
