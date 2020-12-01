@@ -1,6 +1,8 @@
 from prompt_toolkit.shortcuts import message_dialog, prompt, button_dialog
 import os
 from .auth_view import stu_auth
+import datetime
+from src.models.students import Student
 
 def center_text(text):
     """
@@ -12,6 +14,34 @@ def center_text(text):
     space = " " * space_on_one_side
 
     return space + text + space    
+
+# Validates Add new Course Data
+def validate_new_course(stu_rollNum, stu_dob, date):
+    """
+        Input: Course feilds
+        Output: Tuple(Status, Message)
+    """
+
+    message = ""
+
+    # Roll Number validation
+    if not (len(stu_rollNum) == 10 ):
+        message = "Roll Number must contain 10 Characters."
+        return False, message
+
+    # Date Validation
+    date_format = '%d-%m-%Y'
+    if not( datetime.datetime.strptime(date, date_format )):
+        message = "Incorrect data format, should be DD-MM-YYYY"
+        return False, message
+    
+    # DOB Validation
+    date_format = '%d-%m-%Y'
+    if not( datetime.datetime.strptime(date, date_format )):
+        message = "Incorrect data format, should be DD-MM-YYYY"
+        return False, message
+
+
 
 def main(session):
     
@@ -32,20 +62,51 @@ def main(session):
 def register(session):
 
     addTask = print(" Enter details to register \n ")
-    rollNum = prompt("Roll Number > ")
-    while(True):        
-        if len(rollNum)==10:
-            rollNumber = rollNum
-            break
-        else:
-            rollNum = prompt(" Enter valid 10 digit roll number > ")
+    stu_rollNum = prompt("Roll Number : ")
+    # while(True):        
+    #     if len(stu_rollNum)==10:
+    #         rollNumber = stu_rollNum
+    #         break
+    #     else:
+    #         rollNum = prompt(" Enter valid 10 digit roll number : ")
 
-    name = prompt("Name        > ")
-    dob = prompt("DateOfBirth > ")
-    date = prompt("DateOfJoining > ")
+    # name = prompt("Name        > ")
+    # dob = prompt("DateOfBirth > ")
+    # date = prompt("DateOfJoining > ")
 
     # dic[addTask] = 0      
     # Query for insertion into db required here 
+    """
+        Allow admin to add new courses to db.
+    """
+    stu_name = prompt(" Name of the Student: ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+    
+    stu_dob = prompt(" Date of Birth: ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+    
+    date = prompt(" Joining Date: ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+
+    # Validates input
+    status, message = validate_new_course(stu_rollNum, stu_name, stu_dob, date)
+    if status:
+        Student(
+               name = stu_name,
+               dob = stu_dob,
+               date = date,
+               rollNum = stu_rollNum).insert(session)
+        print("\nRegisterd  Successful!")
+        if(evaluate()):
+
+            main(session)
+    else:
+        print("\n ",message," Please try again!")
+        register(session)
+
 
     #print(dic)
     if(evaluate()):
@@ -73,12 +134,19 @@ def studentLogin(session):
         print(" Invalid credentials \n")
 
 def evaluate():
-    value = int(prompt("\n Do you want to visit main menu \n 1.Yes \n 2.No \n \n > "))
+    print("\n Do you want to visit main menu \n 1.Yes \n 2.No \n  ")
+
+    value = int(prompt("user@student> ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n"))
+    
+
     if (value ==1):
         return True
     else:
 
         # write code to clear session if present 
+        
 
         print(" Session terminated succesfully \n")
         exit()
@@ -92,8 +160,15 @@ def student():
     
     a=True
     while(a):
-        opt= int(prompt("choose to perform \n 1.View Courses \n 2.Enroll for a Course \n 3.Sign out  \n> "))
-        
+        print(""" Choose to Perfrom \n
+            1. View Courses
+            2. Enroll for a Course
+            3. Exit
+        """)
+        opt = int(prompt("user@student> ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n"))
+    
         if (opt) == 1:
             print("\n View Courses ")
             i=1
@@ -113,21 +188,30 @@ def student():
                 newlist.append(key)
                 print("  "+str(i)+":"+str(key))
 
-            opt = int(prompt("\n select to Course to Apply \n \n> "))-1
+            print("\nselect to Course to Apply ")
+
+            opt = int(prompt("user@student> ", 
+               bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")) -1
+    
             if opt < len(newlist):
                 print(len(newlist))
                 origkey = newlist[opt]
                 dic[origkey] = 1
             else:
-                opt = int(prompt(" \n select a valid course \n \n"))
-
+                print(" \n select a valid course ")
+                
+                if(evaluate()):
+                    student()
+            # Student(
+            #   course = origkey).insert(session)
             print(" \n Applied Succesfully \n ")
             if(evaluate()):
                 student()
             
         elif(opt) ==3 :
             print(" \nLogged out Succesfully ")
-            break
+            exit()
         else:
             print(" \n invalid opiton") 
     
