@@ -2,7 +2,6 @@ from sqlalchemy import Column, String, Date, DateTime
 from .base import Base
 import bcrypt
 
-password_salt = b"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa"
 
 class Auth(Base):
     __tablename__ = "auth"
@@ -18,7 +17,8 @@ class Auth(Base):
             Insert new record to DB.
         """
 
-        self.password = bcrypt.hashpw(self.password.encode('utf-8'), password_salt)
+        self.password = bcrypt.hashpw(self.password.encode('utf-8'),
+                                      bcrypt.gensalt())
 
         session.add(self)
         
@@ -32,5 +32,16 @@ class Auth(Base):
 
     
     @staticmethod
-    def check_auth(session, username, password):
-        pass
+    def is_auth_successful(session, username, password):
+        """
+            Validates the authentication
+        """
+        auth_obj = session.query(Auth).get(username)
+
+        if auth_obj is None:
+            return False
+
+        if bcrypt.checkpw(password.encode('utf-8'), auth_obj.password):
+            return True
+        else:
+            return False

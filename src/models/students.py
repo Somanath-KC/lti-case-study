@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, Date, DateTime
 from .base import Base
+from datetime import datetime
 
 class Student(Base):
     __tablename__ = "students"
@@ -21,10 +22,13 @@ class Student(Base):
             Input: Session
             Output: Status of transaction.
         """
+
+        self.dob = datetime.strptime(self.dob, "%d-%M-%Y")
+
         session.add(self)
         try:
             session.commit()
-        except:
+        except Exception as e:
             session.rollback()
             return False
         

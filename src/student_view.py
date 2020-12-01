@@ -97,19 +97,24 @@ def register(session):
     # Input Validation
     status, message = validate_new_course(roll_number, stu_dob, password, retype_password)
     if status:
-        Student(
+        status_1 = Student(
                name = stu_name,
                dob = stu_dob,
                registration_date = date_of_registration,
                roll_number = roll_number).insert(session)
 
-        Auth(username = roll_number,
+        status_2 = Auth(username = roll_number,
              password = password,
              last_login = datetime.now()).insert(session)
         
-        message_dialog(
-            title='Registration Successful.',
-            text='Press ENTER to Login.').run()
+        if status_1 and status_2:
+            message_dialog(
+                title='Registration Successful.',
+                text='Press ENTER to Login.').run()
+        else:
+            message_dialog(title='Error in Registration',
+                           text='Please Try again!. Press ENTER to Continue.').run()
+            register(session)
        
         main(session)
     else:
@@ -162,7 +167,7 @@ def student():
     newlist = list()
     #dic1 = dict()
     
-    
+    print("Welcome somanath !!! ")
     a=True
     while(a):
         print(""" Choose to Perfrom \n
