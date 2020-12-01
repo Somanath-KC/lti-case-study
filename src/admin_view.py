@@ -122,6 +122,8 @@ def admin_prompt():
             prompt_view_student()
         elif text == "4":
             exit()
+        else:
+            print("\nInvalid Option! Please try again.")
 
 
 def main(session):

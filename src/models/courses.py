@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Date, DateTime, Integer
 from .base import Base
 
-class Courses(Base):
+class Course(Base):
     __tablename__ = "courses"
 
     # Feilds for Courses Table
@@ -10,3 +10,20 @@ class Courses(Base):
     duration_in_hours = Column('duration_in_hours', Integer, nullable=False)
     fee = Column('fee', Integer, nullable=False)
     date_of_creation = Column('date_of_creation', DateTime, nullable=False)
+
+
+    def insert(self, session):
+        """
+            Input: Session
+            Output: Status of transaction.
+        """
+        
+        session.add(self)
+        try:
+            session.commit()
+        except:
+            session.rollback()
+            return False
+        
+        return True
+

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Date, DateTime
 from .base import Base
 
-class Students(Base):
+class Student(Base):
     __tablename__ = "students"
 
     # Feilds for Students Table
