@@ -124,17 +124,6 @@ def admin_prompt():
             exit()
 
 
-def evaluate():
-    value = int(prompt("\n Do you want to visit main menu \n 1.Yes \n 2.No \n \n > "))
-    if (value ==1):
-        return True
-    else:
-
-        # write code to clear session if present 
-
-        print(" Session terminated succesfully \n")
-        exit()
-
 def main(session):
     """
         Entry Point for admin view.
