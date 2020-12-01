@@ -75,6 +75,59 @@ def admin_prompt():
             prompt_view_courses()
         elif text == "3":
             prompt_view_student()
+                   "admin Management System (Logged In as @Administrator)") + "\n")
+
+def evaluate():
+    value = int(prompt("\n Do you want to visit main menu \n 1.Yes \n 2.No \n \n > "))
+    if (value ==1):
+        return True
+    else:
+
+        # write code to clear session if present 
+
+        print(" Session terminated succesfully \n")
+        exit()
+        
+
+def admin():
+    dic = dict({"CSE":0,"ECE":0,"EEE":0,"MBA":0,"MECH":0})
+    newlist = list()
+
+    opt = int(prompt("Select one to perform \n 1.Add new course \n 2.View Courses \n 3.View admin\n > "))
+    if opt ==1:
+        course = prompt(" Enter course to add Ex:CSE,ECE.. \n > ")
+        if  len(course) ==3:
+
+            # query to insert course required here 
+            print(" Added Sucessfully \n ")
+            
+        else:
+            course = prompt(" Please Enter valid course of lenght 3 characters \n > ")
+
+        if(evaluate()):
+            admin()
+
+    elif opt ==2:
+        print(" List of Courses ") 
+
+        # query to fetch courses from db 
+        i=1
+        for key,value in dic.items():
+            if dic[key] ==0:
+                print(" "+str(i)+":"+ key)
+                i+=1
+        if(evaluate()):
+            admin()    
+    elif opt==3:
+        print(" List of Registered Studendts ")
+
+        # query to get list of  admins from db and display here 
+        if(evaluate()):
+            admin()
+    else:
+        print("invalid option ")
+        if(evaluate()):
+            admin() 
 
 
 def main(session):
@@ -93,4 +146,4 @@ def main(session):
 
 
     # Start Admin Prompt
-    admin_prompt()
+    admin()
