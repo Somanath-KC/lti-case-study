@@ -1,4 +1,5 @@
 from prompt_toolkit.shortcuts import input_dialog, message_dialog
+from sqlalchemy.sql.functions import user
 from .models.auth import Auth
 
 
@@ -53,5 +54,8 @@ def stu_auth(session, is_stu=False):
         text='Please type your password:',
         password=True).run()
 
-
-    return Auth.is_auth_successful(session, username, password)
+    status = (Auth.is_auth_successful(session,
+                                      username,
+                                      password), 
+                                      username)
+    return status

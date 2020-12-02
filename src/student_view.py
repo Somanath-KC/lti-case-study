@@ -47,19 +47,26 @@ def validate_new_course(roll_number, stu_dob, password, retype_password):
 
 def main(session):
     
-    # Choose the role
-    is_stu_role = button_dialog(
+    # Choose option Login/Register
+
+    student_register = button_dialog(
         title='Student Login',
         text='Choose Login to Continue or Get registered ',
         buttons=[
-            ('Login', True),
-            ('Register', False),
+            ('Login', False),
+            ('Register', True),
         ],
     ).run()
-    if is_stu_role:
-        studentLogin(session)
-    else:
+
+    if student_register:
         register(session)
+    else:
+        auth_status, username = stu_auth(session, is_stu=True)
+
+        if auth_status:
+            session.student_username = username
+
+
 
 
 def register(session):
@@ -131,97 +138,3 @@ def stu_prompt():
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Student)") + "\n")
         print(text)
-
-
-def studentLogin(session):
-   
-    if stu_auth(session, is_stu=True):
-        print(" Press any key to continue .. \n")
-        student()
-        
-        
-    else:
-        print(" Invalid credentials \n")
-
-def evaluate():
-    print("\n Do you want to visit main menu \n 1.Yes \n 2.No \n  ")
-
-    value = int(prompt("user@student> ", 
-               bottom_toolbar="\n"+ center_text(
-                   "Student Management System (Logged In as @Student)") + "\n"))
-    
-
-    if (value ==1):
-        return True
-    else:
-
-        # write code to clear session if present 
-        
-
-        print(" Session terminated succesfully \n")
-        exit()
-        
-def student():
-
-    dic = dict({"CSE":0,"ECE":0,"EEE":0,"MBA":0,"MECH":0})
-    newlist = list()
-    #dic1 = dict()
-    
-    print("Welcome Student! ")
-    a=True
-    while(a):
-        print(""" Choose to Perfrom \n
-            1. View Courses
-            2. Enroll for a Course
-            3. Exit
-        """)
-        opt = int(prompt("user@student> ", 
-               bottom_toolbar="\n"+ center_text(
-                   "Student Management System (Logged In as @Student)") + "\n"))
-    
-        if (opt) == 1:
-            print("\n View Courses ")
-            i=1
-            for key,value in dic.items():
-                if dic[key] ==0:
-                    print(" "+str(i)+":"+ key)
-                    i+=1
-            if(evaluate()):
-                student()
-            
-        elif(opt) == 2:
-
-            print("\n Enroll for a Course \n")
-            i=0
-            for (key),value in dic.items():
-                i+=1
-                newlist.append(key)
-                print("  "+str(i)+":"+str(key))
-
-            print("\nselect to Course to Apply ")
-
-            opt = int(prompt("user@student> ", 
-               bottom_toolbar="\n"+ center_text(
-                   "Student Management System (Logged In as @Student)") + "\n")) -1
-    
-            if opt < len(newlist):
-                print(len(newlist))
-                origkey = newlist[opt]
-                dic[origkey] = 1
-            else:
-                print(" \n select a valid course ")
-                
-                if(evaluate()):
-                    student()
-            # Student(
-            #   course = origkey).insert(session)
-            print(" \n Applied Succesfully \n ")
-            if(evaluate()):
-                student()
-            
-        elif(opt) ==3 :
-            print(" \nLogged out Succesfully ")
-            exit()
-        else:
-            print(" \n invalid opiton") 
-    
