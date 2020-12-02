@@ -167,7 +167,7 @@ def student():
     newlist = list()
     #dic1 = dict()
     
-    print("Welcome somanath !!! ")
+    print("Welcome Student! ")
     a=True
     while(a):
         print(""" Choose to Perfrom \n
