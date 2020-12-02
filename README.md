@@ -8,7 +8,6 @@ The tech stack used for this project includes
 - Python3
 - SqlAlchamey 
 
-
 **Project Structure** 
 ```
 
@@ -42,7 +41,26 @@ The tech stack used for this project includes
 	 ```
 	 $ python sms.py
 	 ```
+**Things to Keep in mind :**
 
+- For Student | Admin
+   - Roll Number must contains length of 10 Characters
+   - Date should be in DD-MM-YYY format 
+    - Course characters length  should be >= 3 ( Ex: ECE, CSE... ) 
+ 
+ **Default Login Credentials**
+ 
+ - For Admin
+ ```
+   - Username: admin
+   - Password: 1234
+ ```
+ - For Student
+  ```
+   - Username: student
+   - Password: 1234
+ ```
+ 
 **Developers**
 -
 Do Follow us  for more interesting updates
