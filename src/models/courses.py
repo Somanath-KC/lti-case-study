@@ -13,9 +13,10 @@ class Course(Base):
 
     
     def __repr__(self) -> str:
-        return "COURSE_ID-{}, NAME-{}, DURAION-{}Hrs., FEE-{}, COURSE_CREATION_DATE-{}".format(self.course_id, self.name,
+        return "| {:<28} | {:<28} | {:<18} | {:<18} | {:<28} |".format(
+                     self.course_id, self.name,
                      self.duration_in_hours, 
-                     self.fee, self.date_of_creation)
+                     self.fee, self.date_of_creation.strftime("%b-%d-%Y %H:%M:%S"))
 
 
     def insert(self, session):
@@ -33,6 +34,7 @@ class Course(Base):
         
         return True
 
+
     @staticmethod
     def view_courses(session):
         """
@@ -43,3 +45,16 @@ class Course(Base):
         result = session.query(Course).all()
 
         return result
+
+
+    @staticmethod
+    def print_header():
+        """
+            Prints the header of the courses table
+        """
+        header = "| {:<28} | {:<28} | {:<18} | {:<18} | {:<28} |".format("COURSE_ID",
+                                                                "NAME",
+                                                                "DURATION (Hrs)",
+                                                                "FEE (INR)",
+                                                                "REGISTRATION_DATE")
+        print(header,'\n', "_"*(len(header)),"\n")

@@ -1,6 +1,5 @@
 import os
 import random
-import string
 from datetime import datetime
 from src.models.courses import Course
 from src.models.students import Student
@@ -27,8 +26,9 @@ def center_text(text):
 
 
 def get_random_string(length):
-    letters = string.ascii_lowercase
+    letters = "0123456789"
     result_str = ''.join(random.choice(letters) for i in range(length))
+    result_str = "CR-" + result_str
     return result_str
 
 
@@ -103,9 +103,10 @@ def prompt_view_courses(session):
     """
         Shows the available courses in db.
     """
-    query_res = Course.view_courses(session)
+    result = Course.view_courses(session)
+    Course.print_header()
 
-    for i in query_res:
+    for i in result:
         print(i)
 
     admin_prompt(session)
@@ -113,7 +114,7 @@ def prompt_view_courses(session):
 
 def prompt_view_student(session):
     """
-        View the details of given student rollnumber
+        View the details of all students
     """
     result = Student.view_students(session)
     Student.print_header()
@@ -122,6 +123,13 @@ def prompt_view_student(session):
         print(i)
 
     admin_prompt(session)
+
+
+def prompt_view_enrollments(session):
+    """
+        Displays the course enrollments data
+    """
+    pass
 
 
 def admin_prompt(session):
@@ -133,9 +141,10 @@ def admin_prompt(session):
         print("\n Choose one option to continue.")
         print("""
             1. Add a new Course
-            2. View Courses
-            3. View Student
-            4. Exit
+            2. View Student
+            3. View Courses
+            4. View Enrollments
+            5. Exit
         """)
         text = prompt("user@admin> ", 
                bottom_toolbar="\n"+ center_text(
@@ -144,10 +153,12 @@ def admin_prompt(session):
         if text == "1":
             prompt_add_new_course(session)
         elif text == "2":
-            prompt_view_courses(session)
-        elif text == "3":
             prompt_view_student(session)
+        elif text == "3":
+            prompt_view_courses(session)
         elif text == "4":
+            prompt_view_enrollments(session)
+        elif text == "5":
             exit()
         else:
             print("\nInvalid Option! Please try again.")
