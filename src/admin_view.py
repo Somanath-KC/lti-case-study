@@ -47,13 +47,13 @@ def validate_new_course(name, duration, fee):
     message = ""
 
     # Course Name validation
-    if not (len(name) > 3):
+    if not (len(name) >= 3):
         message = "Course name must contain atleast 3 Characters."
         return False, message
 
     # Course Duration Validation
     if not(duration.isnumeric()):
-        message = "Duration feild has to be integer."
+        message = "Duration field has to be integer."
         return False, message
 
     # Course Fee Validation

@@ -46,7 +46,7 @@ def stu_auth(session, is_stu=False):
     # Promt user for username 
     username = input_dialog(
         title='Authentication',
-        text='Please type your username:').run()
+        text='Please type your username(Roll Number):').run()
 
     # Promt user for password
     password = input_dialog(
