@@ -1,3 +1,4 @@
+from os import stat
 from sqlalchemy import Column, String, Date, DateTime
 from .base import Base
 from datetime import datetime
@@ -13,8 +14,11 @@ class Student(Base):
 
 
     def __repr__(self) -> str:
-        return "RollNumber-{}, Name-{}, DOB-{}, DATE_OF_REGISTRATION-{} ".format(
-                self.roll_number, self.name, self.dob, self.registration_date)
+        return "|{:<18} |{:<18} |{:<21} |{:<21} |".format(
+                self.roll_number,
+                self.name,
+                self.dob.strftime("%d-%b-%Y"),
+                self.registration_date.strftime("%b-%d-%Y %H:%M:%S"))
     
 
     def insert(self, session):
@@ -45,3 +49,14 @@ class Student(Base):
         result = session.query(Student).all()
 
         return result
+
+    @staticmethod
+    def print_header():
+        """
+            Prints the header of the students table
+        """
+        header = "| {:<18} | {:<18} | {:<21} | {:<21} |".format("ROLL_NUMBER",
+                                                                "NAME",
+                                                                "DATE-OF-BIRTH",
+                                                                "REGISTRATION_DATE")
+        print(header,'\n', "_"*(len(header)),"\n")

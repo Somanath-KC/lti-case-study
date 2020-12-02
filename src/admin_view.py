@@ -3,6 +3,7 @@ import random
 import string
 from datetime import datetime
 from src.models.courses import Course
+from src.models.students import Student
 from .auth_view import auth
 from prompt_toolkit.shortcuts import message_dialog
 from prompt_toolkit import prompt
@@ -114,7 +115,13 @@ def prompt_view_student(session):
     """
         View the details of given student rollnumber
     """
-    pass
+    result = Student.view_students(session)
+    Student.print_header()
+
+    for i in result:
+        print(i)
+
+    admin_prompt(session)
 
 
 def admin_prompt(session):
