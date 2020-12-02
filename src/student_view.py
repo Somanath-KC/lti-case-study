@@ -1,7 +1,9 @@
 import os
+from src.models.enrollments import Enrollment
 from prompt_toolkit.shortcuts import message_dialog, prompt, button_dialog
 from .auth_view import stu_auth
 from src.models.students import Student
+from src.models.courses import Course
 from src.models.auth import Auth
 from datetime import datetime
 
@@ -65,8 +67,12 @@ def main(session):
 
         if auth_status:
             session.student_username = username
-
-
+            stu_prompt(session)
+        else:
+            message_dialog(
+                title='Authentication Failed',
+                text='Invalid Username/Password. Press ENTER to try again.').run()
+            main(session)
 
 
 def register(session):
@@ -129,12 +135,83 @@ def register(session):
         register(session)
 
 
-def stu_prompt():
+def prompt_view_courses(session):
+    """
+        Shows the available courses in db.
+    """
+    result = Course.view_courses(session)
+    Course.print_header()
+
+    for i in result:
+        print(i)
+
+    stu_prompt(session)
+
+
+def prompt_enroll_for_course(session):
+    """
+        Enrolls student to available courses
+    """
+    # Displays the available courses
+    result = Course.view_courses(session)
+    Course.print_header()
+    for i in result:
+        print(i)
+
+    # Course registration prompt
+    course_id = prompt("\n Enter Course ID from above list to enroll: ", 
+                    bottom_toolbar="\n"+ center_text(
+                   "Student Management System (Logged In as @Student)") + "\n")
+
+    if session.query(Course).get(course_id) is not None:
+        new_enroll = Enrollment()
+        new_enroll.roll_number = session.student_username
+        new_enroll.course_id = course_id
+        new_enroll.date_of_enrollment = datetime.now()
+
+        if new_enroll.insert(session):
+            print("\nEnrollment Success!")
+        else:
+            print("\n Error enrolling course. Please try again!")
+            stu_prompt(session)
+    else:
+        print("Please Enter Valid Course ID.")
+
+    stu_prompt(session)
+
+
+def prompt_view_my_courses(session):
+    """
+        Displays the enrolled courses
+    """
+    pass
+ 
+
+def stu_prompt(session):
     """
         Starts Receving input from user.
     """
+
     while True:
-        text = prompt("user@student> ", 
+        print("\nWelcome Student.")
+        print("\n Choose one option to continue.")
+        print("""
+            1. View Available Courses
+            2. Enroll for Course
+            3. View my Courses
+            4. Exit
+        """)
+        text = prompt("user@student\{}> ".format(session.student_username), 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Student)") + "\n")
-        print(text)
+        
+        if text == "1":
+            prompt_view_courses(session)
+        elif text == "2":
+            prompt_enroll_for_course(session)
+        elif text == "3":
+            prompt_view_my_courses(session)
+        elif text == "4":
+            exit()
+        else:
+            print("\nInvalid Option! Please try again.")
