@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Date, DateTime
 from .base import Base
 from datetime import datetime
 
+
 class Student(Base):
     __tablename__ = "students"
 
@@ -12,14 +13,12 @@ class Student(Base):
     dob = Column('dob', Date, nullable=False)
     registration_date = Column('registration_date', DateTime, nullable=False)
 
-
     def __repr__(self) -> str:
         return "|{:<18} |{:<18} |{:<21} |{:<21} |".format(
                 self.roll_number,
                 self.name,
                 self.dob.strftime("%d-%b-%Y"),
                 self.registration_date.strftime("%b-%d-%Y %H:%M:%S"))
-    
 
     def insert(self, session):
         """
@@ -35,10 +34,9 @@ class Student(Base):
         except Exception as e:
             session.rollback()
             return False
-        
+
         return True
 
-    
     @staticmethod
     def view_students(session):
         """
@@ -59,4 +57,4 @@ class Student(Base):
                                                                 "NAME",
                                                                 "DATE-OF-BIRTH",
                                                                 "REGISTRATION_DATE")
-        print(header,'\n', "_"*(len(header)),"\n")
+        print(header, '\n', "_"*(len(header)), "\n")

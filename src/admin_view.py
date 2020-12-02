@@ -9,7 +9,6 @@ from prompt_toolkit.shortcuts import message_dialog
 from prompt_toolkit import prompt
 
 
-
 # ----- #
 # Start Helper Functions
 # ----- #
@@ -73,30 +72,30 @@ def prompt_add_new_course(session):
     """
         Allow admin to add new courses to db.
     """
-    course_name = prompt(" Name of the Course?: ", 
+    course_name = prompt(" Name of the Course?: ",
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
     
     course_duration = prompt(" Duration of the Course? (In Hours): ", 
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
-    
-    course_fee = prompt(" Fee for the Course? (INR): ", 
+
+    course_fee = prompt(" Fee for the Course? (INR): ",
                bottom_toolbar="\n"+ center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
 
     # Validates input
     status, message = validate_new_course(course_name, course_duration, course_fee)
     if status:
-        Course(course_id = get_random_string(10),
-               name = course_name,
-               duration_in_hours = course_duration,
-               fee = course_fee,
-               date_of_creation = datetime.now()).insert(session)
+        Course(course_id=get_random_string(10),
+               name=course_name,
+               duration_in_hours=course_duration,
+               fee=course_fee,
+               date_of_creation=datetime.now()).insert(session)
         print("\nAdd Course Successful!")
         admin_prompt(session)
     else:
-        print("\n ",message," Please try again!")
+        print("\n ", message, " Please try again!")
         prompt_add_new_course(session)
 
 
@@ -156,10 +155,10 @@ def admin_prompt(session):
             4. View Enrollments
             5. Exit
         """)
-        text = prompt("user@admin> ", 
-               bottom_toolbar="\n"+ center_text(
+        text = prompt("user@admin> ",
+               bottom_toolbar="\n" + center_text(
                    "Student Management System (Logged In as @Administrator)") + "\n")
-        
+
         if text == "1":
             prompt_add_new_course(session)
         elif text == "2":
@@ -183,11 +182,10 @@ def main(session):
     while True:
         if auth(session, is_admin=True):
             break
-        else:    
+        else:
             message_dialog(
                 title='Authentication Failed',
                 text='Invalid Username/Password. Press ENTER to try again.').run()
-
 
     # Start Admin Prompt
     admin_prompt(session)

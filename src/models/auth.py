@@ -11,7 +11,6 @@ class Auth(Base):
     password = Column('password', String, nullable=False)
     last_login = Column('last_login', DateTime, nullable=False)
 
-
     def insert(self, session):
         """
             Insert new record to DB.
@@ -21,16 +20,15 @@ class Auth(Base):
                                       bcrypt.gensalt())
 
         session.add(self)
-        
+
         try:
             session.commit()
-        except:
+        except Exception as e:
             session.rollback()
             return False
-        
+
         return True
 
-    
     @staticmethod
     def is_auth_successful(session, username, password):
         """

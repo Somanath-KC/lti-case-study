@@ -10,7 +10,7 @@ def auth(session, is_admin=False):
                 else False.
     """
 
-    # Promt user for username 
+    # Promt user for username
     username = input_dialog(
         title='Authentication',
         text='Please type your username:').run()
@@ -21,11 +21,10 @@ def auth(session, is_admin=False):
         text='Please type your password:',
         password=True).run()
 
-
     try:
         # Try to fetch credentials from database
         if is_admin:
-            # Defualt Username & Password 
+            # Defualt Username & Password
             # for Admin User Only.
             db_username = 'admin'
             db_password = '1234'
@@ -36,6 +35,7 @@ def auth(session, is_admin=False):
 
     return (db_username == username) and (db_password == password)
 
+
 def stu_auth(session, is_stu=False):
     """
         Input: Session (SQLAlchemy), is_stu(role)
@@ -43,7 +43,7 @@ def stu_auth(session, is_stu=False):
                 else False.
     """
 
-    # Promt user for username 
+    # Promt user for username
     username = input_dialog(
         title='Authentication',
         text='Please type your username(Roll Number):').run()
@@ -56,6 +56,5 @@ def stu_auth(session, is_stu=False):
 
     status = (Auth.is_auth_successful(session,
                                       username,
-                                      password), 
-                                      username)
+                                      password), username)
     return status
