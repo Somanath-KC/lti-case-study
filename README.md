@@ -1,12 +1,26 @@
-# SMS Case Study
+
+# Student Management System(SMS) LTI Case Study
+
 **Overview**
-LTI Case Study Console Application Development. Student Management System (SMS)
+
+XYZ College has come up with the requirement of developing a console based application to basically
+manage the details of all the students who register with the college.
+
+You need to develop a standalone console based application using Java/C#/Python which will be
+responsible for taking care of the above requirement. You can use any database of choice for this case
+study
+
 
 **Tech Stack**
+
 The tech stack used for this project includes
 
 - Python3
-- SqlAlchamey 
+- SqlAlchamey
+- Prompt Toolkit
+- SQLite3
+
+
 
 **Project Structure** 
 ```
@@ -20,14 +34,14 @@ The tech stack used for this project includes
     ├── auth_view.py
     ├── student_view.py
     ├── models
-	    ├── __init__.py
+	    ├── ├── __init__.py
 	 	├── auth.py
 		├── base.py
 		├── courses.py
 	 	├── students.py   
  ``` 
  
-**Environment Setup!**
+**Environment Setup**
 1. Clone this repo
 	 ```
 	 $ git clone https://github.com/Somanath-KC/lti-case-study.git
@@ -37,16 +51,21 @@ The tech stack used for this project includes
 	 ```
 	 $ cd lit-case-study
 	 ```
-3. Run the Application
+4. Installing Dependencies
 	 ```
-	 $ python sms.py
+	 $ pip3 install -r requirements.txt
+	 ```
+	 
+4. Run the Application
+	 ```
+	 $ python3 sms.py
 	 ```
 **Things to Keep in mind :**
 
 - For Student | Admin
    - Roll Number must contains length of 10 Characters
    - Date should be in DD-MM-YYY format 
-    - Course characters length  should be >= 3 ( Ex: ECE, CSE... ) 
+    - Course characters length  should be >= 3 
  
  **Default Login Credentials**
  
@@ -63,6 +82,6 @@ The tech stack used for this project includes
  
 **Developers**
 -
-Do Follow us  for more interesting updates
+Follow us  for more updates
  1. https://github.com/Somanath-KC
  2. https://github.com/pavankalyannv
