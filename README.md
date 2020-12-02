@@ -7,7 +7,7 @@ The tech stack used for this project includes
 
 - Python3
 - SqlAlchamey 
-- 
+
 
 **Project Structure** 
 ```
