@@ -184,7 +184,16 @@ def prompt_view_my_courses(session):
     """
         Displays the enrolled courses
     """
-    pass
+    data = Enrollment.view_student_enrollments(session)
+
+    if len(data) < 1:
+        print("\n No Enrollments Found!")
+        stu_prompt(session)
+    else:
+        Enrollment.print_header()
+        for i in data:
+            print(i)
+        stu_prompt(session)
  
 
 def stu_prompt(session):

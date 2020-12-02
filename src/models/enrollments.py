@@ -19,7 +19,7 @@ class Enrollment(Base):
     def __repr__(self) -> str:
         return "|{:<21} |{:<21} |{:<21} |".format(self.course_id,
                                                   self.roll_number,
-                                                  self.date_of_enrollment)
+                                                  self.date_of_enrollment.strftime("%b-%d-%Y %H:%M:%S"))
 
     
     def insert(self, session):
@@ -32,8 +32,6 @@ class Enrollment(Base):
         try:
             session.commit()
         except Exception as e:
-            print(e)
-            input()
             session.rollback()
             return False
         
@@ -53,12 +51,24 @@ class Enrollment(Base):
 
 
     @staticmethod
-    def view_student_enrollments(session, roll_number):
+    def view_student_enrollments(session):
         """
             Querys the enrollments with given roll number.
         """
-
+        roll_number = session.student_username
         result = session.query(Enrollment).filter_by(roll_number = roll_number).all()
 
         return result
+
+    
+    @staticmethod
+    def print_header():
+        """
+            Prints the header of Enrollments table
+        """
+        header = "|{:<21} |{:<21} |{:<21} |".format("ROLL_NUMBER",
+                                                    "COUSER_ID",
+                                                    "REGISTRATION_DATE")
+        print(header,'\n', "_"*(len(header)),"\n")
+
 
