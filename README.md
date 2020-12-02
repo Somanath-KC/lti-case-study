@@ -76,7 +76,7 @@ The tech stack used for this project includes
  ```
  - For Student
   ```
-   - Username: student
+   - Username: 16me1a0579
    - Password: 1234
  ```
  
