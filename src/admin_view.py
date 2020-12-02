@@ -1,6 +1,7 @@
 import os
 import random
 from datetime import datetime
+from src.models.enrollments import Enrollment
 from src.models.courses import Course
 from src.models.students import Student
 from .auth_view import auth
@@ -129,7 +130,16 @@ def prompt_view_enrollments(session):
     """
         Displays the course enrollments data
     """
-    pass
+    data = Enrollment.view_all_enrollments(session)
+
+    if len(data) < 1:
+        print("\nNo enrollments were found!")
+        admin_prompt(session)
+    else:
+        Enrollment.print_header()
+        for i in data:
+            print(i)
+        admin_prompt(session)
 
 
 def admin_prompt(session):

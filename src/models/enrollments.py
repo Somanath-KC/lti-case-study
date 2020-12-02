@@ -66,8 +66,8 @@ class Enrollment(Base):
         """
             Prints the header of Enrollments table
         """
-        header = "|{:<21} |{:<21} |{:<21} |".format("ROLL_NUMBER",
-                                                    "COUSER_ID",
+        header = "|{:<21} |{:<21} |{:<21} |".format("COUSER_ID",
+                                                    "ROLL_NUMBER",
                                                     "REGISTRATION_DATE")
         print(header,'\n', "_"*(len(header)),"\n")
 
