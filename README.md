@@ -10,6 +10,13 @@ You need to develop a standalone console based application using Java/C#/Python 
 responsible for taking care of the above requirement. You can use any database of choice for this case
 study
 
+**Admin View Demo 👇**
+
+[![Admin View Demo](https://img.youtube.com/vi/ohIAJWyYAPE/0.jpg)](https://www.youtube.com/watch?v=ohIAJWyYAPE)
+
+**Student View Demo 👇**
+
+[![Student View Demo](https://img.youtube.com/vi/W_U5pyTPitI/0.jpg)](https://www.youtube.com/watch?v=W_U5pyTPitI)
 
 **Tech Stack**
 
